@@ -8,7 +8,7 @@ import { jwtHelpers } from "./helpers/jwtHelper";
 
 interface Context {
   prisma: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>;
-  user: { userId: number; name: string };
+  userData: { userId: number; name: string };
 }
 
 const prisma = new PrismaClient();
@@ -26,7 +26,7 @@ const main = async () => {
       )) as { userId: number; name: string };
       return {
         prisma,
-        user: verifyToken,
+        userData: verifyToken,
       };
     },
   });
