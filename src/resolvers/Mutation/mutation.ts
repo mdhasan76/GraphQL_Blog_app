@@ -43,7 +43,7 @@ export const Mutation = {
         };
       }
     }
-    const token = jwt.sign(
+    const token = await jwt.sign(
       { userId: newUser.id, name: newUser.name },
       process.env.JWT_SECRET
     );
@@ -77,7 +77,7 @@ export const Mutation = {
         token: null,
       };
     }
-    const token = jwt.sign(
+    const token = await jwt.sign(
       { userId: user.id, name: user.name },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
