@@ -3,7 +3,7 @@ export const Query = {
     return await prisma.user.findMany();
   },
   posts: async (parent: any, args: any, { prisma }: any) => {
-    console.log("Post");
+    // console.log("Post");
     return await prisma.Post.findMany();
   },
 };
