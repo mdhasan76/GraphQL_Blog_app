@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon --watch ./**/*.ts --exec ts-node-dev src/index.ts",
-    "build": "tsc"
+    "build": "yarn tsc build --output /dist/index.js"
   },
   "dependencies": {
     "@apollo/server": "^4.11.0",
