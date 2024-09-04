@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon --watch ./**/*.ts --exec ts-node-dev src/index.ts",
-    "build": "yarn tsc build --output /dist/index.js"
+    "build": "tsc"
   },
   "dependencies": {
     "@apollo/server": "^4.11.0",
@@ -13,10 +13,14 @@
     "@types/crypto-js": "^4.2.2",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^22.4.0",
+    "@vercel/node": "^3.2.11",
+    "apollo-server-express": "^3.13.0",
+    "cors": "^2.8.5",
     "crypto-js": "^4.2.0",
     "dataloader": "^2.2.2",
     "graphql": "^16.9.0",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "type-graphql": "^2.0.0-rc.2"
   },
   "devDependencies": {
     "prisma": "^5.18.0",
