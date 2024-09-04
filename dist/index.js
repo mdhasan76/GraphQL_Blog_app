@@ -1,3 +1,4 @@
+"use strict";
 // import { typeDefs } from "./schema";
 // import { resolvers } from "./resolvers";
 // import { Prisma, PrismaClient } from "@prisma/client";
@@ -13,14 +14,18 @@
 //   prisma: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>;
 //   userData: { userId: number; name: string };
 // }
-
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.config = void 0;
+exports.default = handler;
 // const prisma = new PrismaClient();
 // const main = async () => {
 //   const server = new ApolloServer({
 //     typeDefs,
 //     resolvers,
 //   });
-
 //   const { url } = await startStandaloneServer(server, {
 //     listen: { port: 3000 },
 //     context: async ({ req }): Promise<Context> => {
@@ -50,14 +55,11 @@
 //     console.log("server is running");
 //   });
 // };
-
 // main();
-
 // _____________________________________ Second try
 // const main = async () => {
 //   const app = express();
 //   app.use(cors());
-
 //   const server = new ApolloServer({
 //     typeDefs, // Your GraphQL schema
 //     resolvers, // Your resolvers object
@@ -65,79 +67,55 @@
 //   });
 //   await server.start();
 //   server.applyMiddleware({ app, path: "/graphql" });
-
 //   app.listen(8080, () => {
 //     console.log("Server is running on http://localhost:8080/graphql");
 //   });
 // };
-
 // main();
-
 // _____________________________ Third try
-import { ApolloServer } from "@apollo/server";
-import { expressMiddleware } from "@apollo/server/express4";
-import { PrismaClient } from "@prisma/client";
-import { jwtHelpers } from "./helpers/jwtHelper";
-import express from "express";
-import cors from "cors";
-import { json } from "body-parser";
-import { typeDefs } from "./schema";
-import { resolvers } from "./resolvers";
-import { env } from "process";
+const server_1 = require("@apollo/server");
+const express4_1 = require("@apollo/server/express4");
+const client_1 = require("@prisma/client");
+const jwtHelper_1 = require("./helpers/jwtHelper");
+const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
+const body_parser_1 = require("body-parser");
+const schema_1 = require("./schema");
+const resolvers_1 = require("./resolvers");
 const port = 3000;
-interface Context {
-  prisma: PrismaClient;
-  userData: { userId: number; name: string };
-}
-
-const prisma = new PrismaClient();
-
-const server = new ApolloServer<Context>({
-  typeDefs,
-  resolvers,
+const prisma = new client_1.PrismaClient();
+const server = new server_1.ApolloServer({
+    typeDefs: schema_1.typeDefs,
+    resolvers: resolvers_1.resolvers,
 });
-
-const app = express();
+const app = (0, express_1.default)();
 const startServer = async () => {
-  await server.start();
-
-  app.use(cors());
-
-  app.use(
-    "/api/graphql",
-    json(),
-    expressMiddleware(server, {
-      context: async ({ req }): Promise<Context> => {
-        const verifyToken = (await jwtHelpers.verifyToken(
-          req.headers.authorization
-        )) as { userId: number; name: string };
-        return {
-          prisma,
-          userData: verifyToken,
-        };
-      },
-    })
-  );
-
-  return app;
+    await server.start();
+    app.use((0, cors_1.default)());
+    app.use("/api/graphql", (0, body_parser_1.json)(), (0, express4_1.expressMiddleware)(server, {
+        context: async ({ req }) => {
+            const verifyToken = (await jwtHelper_1.jwtHelpers.verifyToken(req.headers.authorization));
+            return {
+                prisma,
+                userData: verifyToken,
+            };
+        },
+    }));
+    return app;
 };
-
 const serverApp = startServer();
-
-export default async function handler(req: any, res: any) {
-  const app = await serverApp;
-  app(req, res);
+async function handler(req, res) {
+    const app = await serverApp;
+    app(req, res);
 }
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
+exports.config = {
+    api: {
+        bodyParser: false,
+    },
 };
-
 app.get("/", (req, res) => {
-  res.send({ message: `server is running well in ${port} port` });
+    res.send({ message: `server is running well in ${port} port` });
 });
 app.listen(port, () => {
-  console.log(`server is running on port ${3000} he he`);
+    console.log(`server is running on port ${3000} he he`);
 });
