@@ -3,16 +3,13 @@
   "builds": [
     {
       "src": "src/index.ts",
-      "use": "@vercel/node",
-      "config": {
-        "distDir": "dist"
-      }
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/api/graphql",
-      "dest": "/dist/index.js"
+      "src": "/(.*)",
+      "dest": "src/index.ts"
     }
   ]
 }
